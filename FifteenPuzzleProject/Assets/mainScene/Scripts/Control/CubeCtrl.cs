@@ -13,15 +13,26 @@ public class CubeCtrl : MonoBehaviour
 
     private Vector3 chengeCube;
 
-    // Start is called before the first frame update
-    void Start()
+    private RaycastHit emptyHit = new RaycastHit();
+
+    private bool gameStart = false;
+    public bool GameStart
     {
-        
+        get { return gameStart; }
+        set { gameStart = value; }
+    }
+    private bool gameEnd = false;
+    public bool GameEnd
+    {
+        set { gameEnd = value; }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gameEnd == true) { return; }
+        if (gameStart == false) { return; }
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = new Ray();
@@ -35,59 +46,62 @@ public class CubeCtrl : MonoBehaviour
                 if (hit.collider.gameObject == gameObject)
                 {
                     Debug.Log(panelNumber);
-                    RaycastHit emptyHit = new RaycastHit();
+
                     Ray upRay = new Ray(hit.transform.position, hit.transform.forward);
                     Ray downRay = new Ray(hit.transform.position, -hit.transform.forward);
                     Ray rightRay = new Ray(hit.transform.position, hit.transform.right);
                     Ray leftRay = new Ray(hit.transform.position, -hit.transform.right);
-                    Debug.DrawRay(downRay.origin, downRay.direction, Color.red, 20.0f); 
 
                     if (Physics.Raycast(upRay.origin, upRay.direction, out emptyHit, Mathf.Infinity))
                     {
-                        if(emptyHit.collider.tag == "Empty15")
+                        Debug.DrawRay(upRay.origin, upRay.direction, Color.red, 3.0f);
+                        if (emptyHit.collider.tag == "Empty")
                         {
-                            chengeCube = transform.position;
-                            transform.position = emptyHit.collider.transform.position;
-                            emptyHit.collider.transform.position = chengeCube;
-                        }
-                        else
-                        {
-                            Debug.Log("失敗");
+                            Debug.Log("Hit Up");
+                            ChengePos();
                         }
                     }
-                    else if (Physics.Raycast(downRay.origin, downRay.direction, out emptyHit, Mathf.Infinity))
+                    if (Physics.Raycast(downRay.origin, downRay.direction, out emptyHit, Mathf.Infinity))
                     {
-                        if (emptyHit.collider.tag == "Empty15")
+                        Debug.DrawRay(downRay.origin, downRay.direction, Color.red, 3.0f);
+                        if (emptyHit.collider.tag == "Empty")
                         {
-                            Debug.Log("Hit");
-                            chengeCube = transform.position;
-                            transform.position = emptyHit.collider.transform.position;
-                            emptyHit.collider.transform.position = chengeCube;
+                            Debug.Log("Hit Down");
+                            ChengePos();
                         }
                     }
-                    else if (Physics.Raycast(rightRay.origin, rightRay.direction, out emptyHit, Mathf.Infinity))
+                    if (Physics.Raycast(rightRay.origin, rightRay.direction, out emptyHit, Mathf.Infinity))
                     {
-                        if (emptyHit.collider.tag == "Empty15")
+                        Debug.DrawRay(rightRay.origin, rightRay.direction, Color.red, 3.0f);
+                        if (emptyHit.collider.tag == "Empty")
                         {
-                            chengeCube = transform.position;
-                            transform.position = emptyHit.collider.transform.position;
-                            emptyHit.collider.transform.position = chengeCube;
+                            Debug.Log("Hit Right");
+                            ChengePos();
                         }
                     }
-                    else if (Physics.Raycast(leftRay.origin, leftRay.direction, out emptyHit, Mathf.Infinity))
+                    if (Physics.Raycast(leftRay.origin, leftRay.direction, out emptyHit, Mathf.Infinity))
                     {
-                        if (emptyHit.collider.tag == "Empty15")
+                        Debug.DrawRay(leftRay.origin, leftRay.direction, Color.red, 3.0f);
+                        if (emptyHit.collider.tag == "Empty")
                         {
-                            emptyHit.collider.transform.position = chengeCube;
-
+                            Debug.Log("Hit Left");
+                            ChengePos();
                         }
                     }
                     else
                     {
-
+                        Debug.Log("失敗");
                     }
                 }
             }
         }
     }
+
+    public void ChengePos()
+    {
+        chengeCube = transform.position;
+        transform.position = emptyHit.collider.transform.position;
+        emptyHit.collider.transform.position = chengeCube;
+    }
 }
+
