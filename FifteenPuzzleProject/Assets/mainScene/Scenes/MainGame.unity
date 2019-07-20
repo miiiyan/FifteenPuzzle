@@ -931,7 +931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3353ac93227972a49a83e6cc7362ec0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puzzleCtrl: {fileID: 197020255}
+  puzzleController: {fileID: 197020255}
 --- !u!65 &1006883910
 BoxCollider:
   m_ObjectHideFlags: 0

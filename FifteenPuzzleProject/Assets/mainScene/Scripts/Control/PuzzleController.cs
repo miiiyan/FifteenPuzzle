@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PuzzleCtrl : MonoBehaviour
+public class PuzzleController : MonoBehaviour
 {
     private GameObject[] cubesList = new GameObject[16];
     private Vector3[] nowCubesPos = new Vector3[16];
@@ -20,9 +20,13 @@ public class PuzzleCtrl : MonoBehaviour
 
     private bool endGame = false;
 
+    private GameObject sceneManager;
+
     // Start is called before the first frame update
     void Start()
     {
+        sceneManager = SceneController.SceneGameObject;
+
         for (int i = 0; i < 16; i++)
         {
             cubesList[i] = transform.GetChild(i).gameObject;
@@ -32,14 +36,14 @@ public class PuzzleCtrl : MonoBehaviour
         cubeNumsList = Enumerable.Range(0, 16).ToList();
         foreach (var obj in cubeNumsList.Select((item, index) => new { item, index }))
         {
-            cubesList[obj.item].GetComponent<CubeCtrl>().PanelNumber = obj.item;
+            cubesList[obj.item].GetComponent<CubeController>().PanelNumber = obj.item;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (cubesList[15].GetComponent<EmptyCtrl>().ChangeFlag2 == false || endGame == true) { return; }
+        if (cubesList[15].GetComponent<EmptyController>().ChangeFlag2 == false || endGame == true) { return; }
 
         truePos = 0;
 
@@ -57,8 +61,10 @@ public class PuzzleCtrl : MonoBehaviour
             Debug.Log("Game Clear");
             for (int i = 0; i < 16; i++)
             {
-                cubesList[i].GetComponent<CubeCtrl>().GameEnd = true;
+                cubesList[i].GetComponent<CubeController>().GameEnd = true;
                 endGame = true;
+
+                sceneManager.GetComponent<SceneController>().ChangeScene();
             }
         }
 
@@ -68,7 +74,7 @@ public class PuzzleCtrl : MonoBehaviour
     {
         for (int i = 0; i < 16; i++)
         {
-            cubesList[i].GetComponent<CubeCtrl>().GameStart = true;
+            cubesList[i].GetComponent<CubeController>().GameStart = true;
         }
     }
 }

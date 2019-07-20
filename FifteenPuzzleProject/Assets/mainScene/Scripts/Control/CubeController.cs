@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeCtrl : MonoBehaviour
+public class CubeController : MonoBehaviour
 {
     private int panelNumber = 0;
     public int PanelNumber
@@ -52,6 +52,7 @@ public class CubeCtrl : MonoBehaviour
                     Ray rightRay = new Ray(hit.transform.position, hit.transform.right);
                     Ray leftRay = new Ray(hit.transform.position, -hit.transform.right);
 
+                    //上のオブジェクトがEmptyか調べる
                     if (Physics.Raycast(upRay.origin, upRay.direction, out emptyHit, Mathf.Infinity))
                     {
                         Debug.DrawRay(upRay.origin, upRay.direction, Color.red, 3.0f);
@@ -61,6 +62,7 @@ public class CubeCtrl : MonoBehaviour
                             ChengePos();
                         }
                     }
+                    //下のオブジェクトがEmptyか調べる
                     if (Physics.Raycast(downRay.origin, downRay.direction, out emptyHit, Mathf.Infinity))
                     {
                         Debug.DrawRay(downRay.origin, downRay.direction, Color.red, 3.0f);
@@ -70,7 +72,8 @@ public class CubeCtrl : MonoBehaviour
                             ChengePos();
                         }
                     }
-                    if (Physics.Raycast(rightRay.origin, rightRay.direction, out emptyHit, Mathf.Infinity))
+                    //右のオブジェクトがEmptyか調べる
+                    if(Physics.Raycast(rightRay.origin, rightRay.direction, out emptyHit, Mathf.Infinity))
                     {
                         Debug.DrawRay(rightRay.origin, rightRay.direction, Color.red, 3.0f);
                         if (emptyHit.collider.tag == "Empty")
@@ -79,6 +82,7 @@ public class CubeCtrl : MonoBehaviour
                             ChengePos();
                         }
                     }
+                    //左のオブジェクトがEmptyか調べる
                     if (Physics.Raycast(leftRay.origin, leftRay.direction, out emptyHit, Mathf.Infinity))
                     {
                         Debug.DrawRay(leftRay.origin, leftRay.direction, Color.red, 3.0f);

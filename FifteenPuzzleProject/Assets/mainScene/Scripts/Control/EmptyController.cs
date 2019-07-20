@@ -1,25 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class EmptyCtrl : MonoBehaviour
+public class EmptyController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject puzzleCtrl;
+    private GameObject puzzleController;
 
     private RaycastHit emptyHit;
     private Vector3 chengeCube;
     private bool changeFlag1 = false;
     private bool changeFlag2 = false;
 
+    private GameObject nowLoading;
+
     public bool ChangeFlag2
     {
         get { return changeFlag2; }
     }
 
+    void Start()
+    {
+        nowLoading = DontDestoryController.NowLoading;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        //ゲーム開始時シャッフル
         if (changeFlag2 == true && changeFlag1 == true) { return; }
 
         Ray upRay = new Ray(transform.position, transform.forward);
@@ -27,6 +36,7 @@ public class EmptyCtrl : MonoBehaviour
         Ray rightRay = new Ray(transform.position, transform.right);
         Ray leftRay = new Ray(transform.position, -transform.right);
 
+        //左上になるまでシャッフル
         if (transform.position != new Vector3(1.5f, 0.0f, -1.5f) && changeFlag1 == true)
         {
             int i = Random.Range(0, 4);
@@ -66,13 +76,14 @@ public class EmptyCtrl : MonoBehaviour
         else if (transform.position == new Vector3 (1.5f, 0.0f, -1.5f) && changeFlag1 == true)
         {
             changeFlag2 = true;
-            puzzleCtrl.GetComponent<PuzzleCtrl>().GameStartChangeFlag();
+            puzzleController.GetComponent<PuzzleController>().GameStartChangeFlag();
+            nowLoading.SetActive(false);
         }
 
         if (changeFlag1 == true) { return; }
 
 
-
+        //右下になるまでシャッフル
         if (this.transform.position != new Vector3 (-1.5f, 0.0f, 1.5f))
         {
             int i = Random.Range(0, 4);
